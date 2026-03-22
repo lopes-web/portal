@@ -70,10 +70,10 @@ export default function LoginPage() {
         <div className="login-card visible">
           {/* Brand header */}
           <div className="login-brand">
-            <span className="brand-mark">HC</span>
+            <span className="brand-mark">P</span>
             <div>
               <p className="eyebrow">Portal do cliente</p>
-              <h1>Hub Tutorial</h1>
+              <h1>Portal</h1>
             </div>
           </div>
 

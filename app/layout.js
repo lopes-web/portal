@@ -1,7 +1,7 @@
 import './globals.css'
 
 export const metadata = {
-  title: "Hub do Cliente",
+  title: "Portal",
   description: "Acesse seu portal privado de tutoriais e recursos do projeto.",
 };
 

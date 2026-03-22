@@ -4,7 +4,7 @@ import Sidebar from '@/components/Sidebar'
 import Topbar from '@/components/Topbar'
 
 export const metadata = {
-  title: 'Dashboard — Hub do Cliente',
+  title: 'Dashboard — Portal',
 }
 
 export default async function DashboardLayout({ children }) {
