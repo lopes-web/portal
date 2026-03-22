@@ -12,9 +12,15 @@ export function AppProvider({ children, initialProfile }) {
   const [tutorials, setTutorials] = useState([])
   const [accesses, setAccesses] = useState([])
   const [loading, setLoading] = useState(true)
+  const [isMobileNavOpen, setIsMobileNavOpen] = useState(false)
 
   const supabase = createClient()
   const isAdmin = profile?.role === 'admin'
+  const openMobileNav = useCallback(() => setIsMobileNavOpen(true), [])
+  const closeMobileNav = useCallback(() => setIsMobileNavOpen(false), [])
+  const toggleMobileNav = useCallback(() => {
+    setIsMobileNavOpen(current => !current)
+  }, [])
 
   // Fetch clients list (admin: all, client: only theirs)
   const fetchClients = useCallback(async () => {
@@ -82,6 +88,10 @@ export function AppProvider({ children, initialProfile }) {
     tutorials,
     accesses,
     loading,
+    isMobileNavOpen,
+    openMobileNav,
+    closeMobileNav,
+    toggleMobileNav,
     refresh: () => {
       fetchClients()
       if (selectedClientId) {

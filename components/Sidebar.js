@@ -2,13 +2,21 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { useEffect } from 'react'
 import { useApp } from './AppContext'
 
 export default function Sidebar() {
   const pathname = usePathname()
-  const { selectedClient, isAdmin, clients, setSelectedClientId, tutorials } = useApp()
+  const {
+    selectedClient,
+    isAdmin,
+    clients,
+    setSelectedClientId,
+    tutorials,
+    isMobileNavOpen,
+    closeMobileNav,
+  } = useApp()
 
-  // Client sees minimal nav, admin sees full nav
   const clientNav = [
     { target: '/dashboard', label: 'Home', icon: 'M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z' },
     { target: '/dashboard/aulas', label: 'Aulas', icon: 'M4 4h16v12H4zM8 20h8M12 16v4' },
@@ -22,60 +30,92 @@ export default function Sidebar() {
 
   const navItems = isAdmin ? adminNav : clientNav
 
+  useEffect(() => {
+    closeMobileNav()
+  }, [pathname, closeMobileNav])
+
+  useEffect(() => {
+    if (typeof document === 'undefined') return undefined
+
+    const previousOverflow = document.body.style.overflow
+
+    if (isMobileNavOpen) {
+      document.body.style.overflow = 'hidden'
+    }
+
+    return () => {
+      document.body.style.overflow = previousOverflow
+    }
+  }, [isMobileNavOpen])
+
   return (
-    <aside className="sidebar">
-      <div className="brand-block">
-        <span className="brand-mark">P</span>
-        <div>
-          <p className="eyebrow">Portal do cliente</p>
-          <h1>Portal</h1>
-        </div>
-      </div>
+    <>
+      <button
+        className={`sidebar-backdrop ${isMobileNavOpen ? 'open' : ''}`}
+        onClick={closeMobileNav}
+        aria-label="Fechar menu"
+      />
 
-      <nav className="sidebar-nav" aria-label="Menu principal">
-        {navItems.map((item) => (
-          <Link
-            key={item.target}
-            href={item.target}
-            className={`nav-link ${pathname === item.target ? 'active' : ''}`}
-          >
-            <svg className="nav-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-              <path d={item.icon} />
+      <aside className={`sidebar ${isMobileNavOpen ? 'mobile-open' : ''}`}>
+        <div className="sidebar-mobile-head">
+          <div className="brand-block">
+            <img className="brand-logo" src="/logo.svg" alt="Portal" />
+          </div>
+          <button className="sidebar-close" onClick={closeMobileNav} aria-label="Fechar navegação">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M18 6L6 18M6 6l12 12" />
             </svg>
-            {item.label}
-          </Link>
-        ))}
-      </nav>
+          </button>
+        </div>
 
-      {selectedClient && (
-        <div className="sidebar-card">
-          <p className="eyebrow">Projeto ativo</p>
-          <h2>{selectedClient.name}</h2>
-          <div className="sidebar-stat-row">
-            <div className="sidebar-stat">
-              <span className="stat-number">{tutorials.length}</span>
-              <span className="stat-label">aulas</span>
+        <nav className="sidebar-nav" aria-label="Menu principal">
+          {navItems.map((item) => (
+            <Link
+              key={item.target}
+              href={item.target}
+              className={`nav-link ${pathname === item.target ? 'active' : ''}`}
+            >
+              <svg className="nav-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d={item.icon} />
+              </svg>
+              {item.label}
+            </Link>
+          ))}
+        </nav>
+
+        {selectedClient && (
+          <div className="sidebar-card">
+            <p className="eyebrow">Projeto ativo</p>
+            <h2>{selectedClient.name}</h2>
+            <div className="sidebar-stat-row">
+              <div className="sidebar-stat">
+                <span className="stat-number">{tutorials.length}</span>
+                <span className="stat-label">aulas</span>
+              </div>
             </div>
           </div>
-        </div>
-      )}
+        )}
 
-      {isAdmin && clients?.length > 0 && (
-        <div className="sidebar-card compact">
-          <p className="eyebrow">Trocar cliente</p>
-          <div className="client-list">
-            {clients.map(client => (
-              <button
-                key={client.id}
-                className={`client-chip ${client.id === selectedClient?.id ? 'active' : ''}`}
-                onClick={() => setSelectedClientId(client.id)}
-              >
-                <span>{client.name}</span>
-              </button>
-            ))}
+        {isAdmin && clients?.length > 0 && (
+          <div className="sidebar-card compact">
+            <p className="eyebrow">Trocar cliente</p>
+            <div className="client-list">
+              {clients.map((client) => (
+                <button
+                  key={client.id}
+                  className={`client-chip ${client.id === selectedClient?.id ? 'active' : ''}`}
+                  onClick={() => {
+                    setSelectedClientId(client.id)
+                    closeMobileNav()
+                  }}
+                >
+                  <span>{client.name}</span>
+                </button>
+              ))}
+            </div>
           </div>
-        </div>
-      )}
-    </aside>
+        )}
+      </aside>
+    </>
   )
 }

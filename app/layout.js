@@ -3,6 +3,11 @@ import './globals.css'
 export const metadata = {
   title: "Portal",
   description: "Acesse seu portal privado de tutoriais e recursos do projeto.",
+  icons: {
+    icon: "/logo.svg",
+    shortcut: "/logo.svg",
+    apple: "/logo.svg",
+  },
 };
 
 export default function RootLayout({ children }) {

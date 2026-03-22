@@ -70,11 +70,7 @@ export default function LoginPage() {
         <div className="login-card visible">
           {/* Brand header */}
           <div className="login-brand">
-            <span className="brand-mark">P</span>
-            <div>
-              <p className="eyebrow">Portal do cliente</p>
-              <h1>Portal</h1>
-            </div>
+            <img className="brand-logo" src="/logo.svg" alt="Portal" />
           </div>
 
           {/* Welcome text */}
@@ -166,32 +162,6 @@ export default function LoginPage() {
             <p>Acesso exclusivo para clientes autorizados.</p>
           </div>
         </div>
-
-        {/* Decorative side panel */}
-        <aside className="login-aside" aria-hidden="true">
-          <div className="aside-content">
-            <div className="aside-badge">
-              <span className="aside-badge-dot"></span>
-              <span>Portal ativo</span>
-            </div>
-            <h3>Tutoriais sob medida para cada projeto</h3>
-            <p>Dashboard personalizado, biblioteca de videos, cofre de acessos e suporte dedicado — tudo num so lugar.</p>
-            <div className="aside-stats">
-              <div className="aside-stat">
-                <strong>100%</strong>
-                <span>Privado</span>
-              </div>
-              <div className="aside-stat">
-                <strong>24/7</strong>
-                <span>Disponivel</span>
-              </div>
-              <div className="aside-stat">
-                <strong>HD</strong>
-                <span>Video</span>
-              </div>
-            </div>
-          </div>
-        </aside>
       </main>
     </>
   )

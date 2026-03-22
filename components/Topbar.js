@@ -7,7 +7,7 @@ import { useApp } from './AppContext'
 export default function Topbar() {
   const router = useRouter()
   const supabase = createClient()
-  const { profile, isAdmin } = useApp()
+  const { profile, selectedClient, toggleMobileNav } = useApp()
 
   const handleLogout = async () => {
     await supabase.auth.signOut()
@@ -20,8 +20,21 @@ export default function Topbar() {
 
   return (
     <header className="topbar">
-      <div>
-        <h2 className="topbar-greeting">Olá, {displayName}</h2>
+      <div className="topbar-copy">
+        <button
+          className="mobile-menu-button"
+          onClick={toggleMobileNav}
+          aria-label="Abrir menu"
+        >
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
+            <path d="M4 7h16M4 12h16M4 17h16" />
+          </svg>
+        </button>
+
+        <div>
+          <p className="topbar-project">{selectedClient?.name || 'Portal'}</p>
+          <h2 className="topbar-greeting">Olá, {displayName}</h2>
+        </div>
       </div>
 
       <div className="topbar-actions">
@@ -29,9 +42,6 @@ export default function Topbar() {
           <div className="user-avatar">{initial}</div>
           <div className="user-info">
             <strong>{displayName}</strong>
-            <span className={`user-role-badge ${isAdmin ? 'role-admin' : 'role-client'}`}>
-              {isAdmin ? 'admin' : 'cliente'}
-            </span>
           </div>
           <button
             className="logout-button"
