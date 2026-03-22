@@ -7,7 +7,7 @@ import { useApp } from './AppContext'
 export default function Topbar() {
   const router = useRouter()
   const supabase = createClient()
-  const { profile, selectedClient, toggleMobileNav } = useApp()
+  const { profile, toggleMobileNav } = useApp()
 
   const handleLogout = async () => {
     await supabase.auth.signOut()
@@ -32,7 +32,6 @@ export default function Topbar() {
         </button>
 
         <div>
-          <p className="topbar-project">{selectedClient?.name || 'Portal'}</p>
           <h2 className="topbar-greeting">Olá, {displayName}</h2>
         </div>
       </div>
